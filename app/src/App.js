@@ -22,7 +22,7 @@ function App() {
     <div className="App">
       <Provider store={store}>
         <AuthProvider>
-          <Routes basename={process.env.PUBLIC_URL}>
+          <Routes>
             <Route path="/admin/*" exact element={ <ProtectedRoute><Suspense fallback={<>...</>}><Admin /></Suspense></ProtectedRoute>} />
             <Route path="/store/*" exact element={ <ProtectedRoute><Suspense fallback={<>...</>}><Store /></Suspense></ProtectedRoute>} />
             <Route path="/auth/*" exact element={ <NoAuthRoute><Suspense fallback={<>...</>}><Register /></Suspense></NoAuthRoute>} />
