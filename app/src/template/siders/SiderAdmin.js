@@ -21,13 +21,6 @@ function Sidenav({ color, collapsed, setCollapsed }) {
         icon: <HomeTwoTone />,
         icon_sel: <HomeFilled />,
         link:'/',
-    },
-    {
-        label:"Usuarios",
-        key:'users',
-        icon: <EditOutlined />,
-        icon_sel: <EditFilled />,
-        link:'/users',
     }
   ]
 

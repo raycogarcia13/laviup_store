@@ -8,7 +8,8 @@ const dataSchema = new Schema({
     description:{type: String},
     photo:{type: String},
     store:{ type: Types.ObjectId, ref: Store, autopopulate: true },
-    price:{type: String}
+    price:{type: String},
+    imported:{type: Boolean, default:false}
 },{ timestamps: true });
 
 dataSchema.plugin(require('mongoose-autopopulate'));

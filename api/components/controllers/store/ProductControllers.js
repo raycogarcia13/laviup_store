@@ -2,6 +2,7 @@ const ErrorHandler = require("../../utils/errorHandler");
 const catchAsyncErrors = require("../../middlewares/catchAsyncErrors")
 const fs = require("fs");
 const path = require("path")
+const xlsx = require('node-xlsx');
 
 const Store = require('../../models/Store');
 const Product = require("../../models/Product");
@@ -99,5 +100,45 @@ exports.getAll = catchAsyncErrors(async (req,res,next) =>{
         status:"success",
         data:all
     })
+})
+
+exports.importProducts = catchAsyncErrors(async (req,res,next) =>{
+
+    const store = await Store.findOne({user:req.user.id})
+    
+    if(!store){
+        fs.unlinkSync(req.file.path)
+        return next(new ErrorHandler('No tiene tienda aun configurada', 402))
+    }
+
+    let obj = xlsx.parse(req.file.path); // parses a file  
+    const items = obj[0]['data']
+
+    const all = []
+    for(let item of items){ 
+        all.push({
+            name:item[0],
+            description:item[1],
+            price:item[2],
+            photo:item[3],
+            imported:true,
+            store:store._id
+        })
+    }
+
+    await Product.insertMany(all);
+
+
+    fs.unlinkSync(req.file.path)
+
+    const products = await Product.find({
+        store:store._id
+    })
+
+    return res.json({
+        status:"success",
+        data:products
+    })
+
 })
 

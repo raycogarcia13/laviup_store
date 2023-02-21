@@ -15,6 +15,17 @@ exports.create = catchAsyncErrors(async (req,res,next) =>{
         data:newed
     })
 })
+
+exports.all = catchAsyncErrors(async (req,res,next) =>{
+
+   const all = await Store.find();
+
+    return res.json({
+        status:"success",
+        data:all
+    })
+})
+
 exports.logoStore = catchAsyncErrors(async (req,res,next) =>{ 
     const {id} = req.params
 

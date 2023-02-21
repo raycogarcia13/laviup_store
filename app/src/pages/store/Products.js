@@ -23,7 +23,7 @@ import {
 import { useAuth} from '../../auth'
 import { useEffect, useState } from "react";
 import { api, public_uri} from "../../config/axios"
-import { DeleteOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, FilePdfFilled, ImportOutlined, LoadingOutlined, UploadOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
@@ -54,6 +54,7 @@ function Home() {
 
     const [open, setOpen] = useState(false);
     const [open_delete, setOpenDelete] = useState(false);
+    const [openImport, setOpenImport] = useState(false);
 
     const [id,setId] = useState("")
     const [nuevo,setNuevo] = useState({})
@@ -61,6 +62,7 @@ function Home() {
     const [status,setStatus] = useState('')
 
     const [fileList, setFileList] = useState([]);
+    const [fileList2, setFileList2] = useState([]);
     const [uploading, setUploading] = useState(false);
     
     const loading = ()=>{
@@ -69,13 +71,14 @@ function Home() {
     
 
     const [form] = Form.useForm();
+    const [form2] = Form.useForm();
 
     const columns = [
       { dataIndex: 'name', key: 'name', title: 'Nombre', },
-      { dataIndex: 'photo', key: 'photo', title: 'Foto', render:(item)=>{
+      { dataIndex: 'photo', key: 'photo', title: 'Foto', render:(item, data)=>{
         return (
           <Space>
-            <img style={{width:80}} src={public_uri+item}/>
+            <img style={{width:80}} src={data.imported==true?item:public_uri+item}/>
          </Space>
        )
       } },
@@ -107,7 +110,7 @@ function Home() {
       setStatus('loading');
       if(action=='Nueva'){
         const formData = new FormData();
-      fileList.forEach((file) => {
+      fileList2.forEach((file) => {
         formData.append('file', file);
       });
       formData.append('name', values.name);
@@ -136,6 +139,24 @@ function Home() {
       }
     }
 
+    const submitFormImport = async (values) =>{
+      setStatus('loading');
+      const formData = new FormData();
+      fileList2.forEach((file) => {
+        formData.append('file', file);
+      });
+      setUploading(true);
+        const uri = "/store/products_import";
+        api.post(uri,formData).then(res=>{
+          getData();
+          setStatus('recived');
+          message.success('Productos importados correctamente')
+          handleCloseI();
+        }).catch(err=>{
+          message.error(err.message)
+        })
+    }
+
     const onFinishFailed = (errorInfo) => {
       setStatus('error')
       message.error('Error interno')
@@ -156,9 +177,17 @@ function Home() {
       setStatus('');
     };
 
+    const handleCloseI = () => {
+      form2.resetFields();
+      setOpenImport(false);
+    };
+
     const nuevoOpen = () => {
       setAction('Nueva')
       setOpen(true);
+    };
+    const nuevoOpen2 = () => {
+      setOpenImport(true);
     };
 
     const deleteOpen = async (item) => {
@@ -191,7 +220,18 @@ function Home() {
       fileList,
     };
 
-    return <Card title="Listado de productos" extra={<Button onClick={nuevoOpen} type='primary'>Nuevo</Button>}>
+    const props2 = {
+      onRemove: (file) => {
+        setFileList2();
+      },
+      beforeUpload: (file) => {
+        setFileList2([file]);
+        return false;
+      },
+      fileList2,
+    };
+
+    return <Card title="Listado de productos" extra={<><Button onClick={nuevoOpen2} type='info'><FilePdfFilled /></Button> <Button onClick={nuevoOpen} type='primary'>Nuevo</Button></>}>
     <Table
             dataSource={products}
             columns={columns}
@@ -277,6 +317,47 @@ function Home() {
                 name="description" 
               >
                 <TextArea autoSize={{ minRows: 3, maxRows: 5 }}/>
+              </Form.Item>
+             
+            </Form>
+        </Modal>
+
+        <Modal
+          title={`Importar productos`}
+          open={openImport}
+          confirmLoading={loading()}
+          okText="Enviar"
+          onCancel={handleCloseI}
+          cancelText="Cancelar"
+          footer={
+            <>
+              <Button key="btnclose" onClick={handleCloseI}>
+                  Cancelar
+              </Button>
+              <Button type='primary' onClick={form2.submit} form={form2} loading={loading()} key="btnsubmit" htmlType="submit">
+                  Enviar
+              </Button>
+            </>
+            }
+          >
+           <Form
+              form={form2}
+              name="basic"
+              labelCol={{ span: 5 }}
+              layout="horizontal"
+              initialValues={nuevo}
+              onFinish={submitFormImport}
+              onFinishFailed={onFinishFailed}
+              autoComplete="on"
+            >
+
+              <Form.Item
+                label="Excel"
+                name="file"
+              >
+                <Upload {...props2}>
+                  <Button icon={<UploadOutlined />}>Select File</Button>
+                </Upload>
               </Form.Item>
              
             </Form>

@@ -99,10 +99,10 @@ const orderProducts = (prods) =>{
        <Card
           key={item._id}
           hoverable
-          style={{ width: 240, marginInline:10 }}
-          cover={<img alt={item.name} style={{height:200}} src={public_uri+item.photo} />}
+          style={{ width: 240, marginInline:10, marginBottom:10 }}
+          cover={<img alt={item.name} style={{height:200}} src={item.imported==true?item.photo:public_uri+item.photo} />}
         >
-          <Meta title={item.name} description={item.description} />
+          <Meta title={item.name} description={item.description? item.description.slice(0,100)+" ..." : ""} />
           <Tooltip title="Agregar al carrito">
             <Badge count={countItem(item)}>
               <Button onClick={()=>addToCart(item)} type='link'> 
@@ -111,6 +111,9 @@ const orderProducts = (prods) =>{
             </Badge>
             <p>{item.store.address}</p>
             <p>A solo: <b>{Math.round(distance(location, item.store.location))}Km</b></p>
+          </Tooltip>
+          <Tooltip title={item.store.name}>
+            <img alt={item.store.name} style={{height:20}} src={public_uri+item.store.logo} />
           </Tooltip>
         </Card>
     )

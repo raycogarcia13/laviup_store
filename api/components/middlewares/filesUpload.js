@@ -17,6 +17,14 @@ const logoStorage = multer.diskStorage({
     }
 });
 
+const FileStorage = multer.diskStorage({
+    destination:  process.env.NODE_ENV=='DEVELOPMENT'? path.join(__dirname, "../public/tmp") : path.join(__dirname, "../public/tmp"), 
+      filename: (req, file, cb) => {
+          const code = req.body.name || Math.random() %100
+          cb(null, code+ Date.now() + path.extname(file.originalname))
+    }
+});
+
 exports.imageUpload = multer({
     storage: imageStorage,
     limits: {
@@ -38,6 +46,19 @@ exports.logoUpload = multer({
     fileFilter(req, file, cb) {
       if (!file.originalname.match(/\.(png|jpg|jpeg|JPG|JPEG)$/)) { 
          return cb(new Error('Please upload a Image'))
+       }
+     cb(undefined, true)
+  }
+}) 
+
+exports.filesUpload = multer({
+    storage: logoStorage,
+    limits: {
+      fileSize: 10000000 // 10000000 Bytes = 10 MB
+    },
+    fileFilter(req, file, cb) {
+      if (!file.originalname.match(/\.(xlsx)$/)) { 
+         return cb(new Error('Please upload a Excel file'))
        }
      cb(undefined, true)
   }
