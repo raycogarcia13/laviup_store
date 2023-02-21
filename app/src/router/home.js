@@ -10,7 +10,6 @@ import { AuthProvider} from '../auth'
 
 const Home = lazy( ()=>import('../pages/home/Home') )
 const Login = lazy( ()=>import('../pages/home/Login') )
-const Register = lazy( ()=>import('../pages/home/Register') )
 
 
 const E404 = lazy( ()=>import('../pages/404') )
