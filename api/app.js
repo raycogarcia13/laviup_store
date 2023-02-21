@@ -6,7 +6,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const path = require("path")
 
-const PORT =  (process.env.NODE_ENV=='DEVELOPMENT') ? process.env.PORT_DEV || 4000:process.env.PORT || 3000;
+const PORT =  (process.env.NODE_ENV=='DEVELOPMENT') ? process.env.PORT_DEV || 4000:process.env.PORT || 4000;
 
 app.set('port',PORT)
 
