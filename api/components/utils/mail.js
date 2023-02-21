@@ -16,23 +16,34 @@ async function myCustomMethod(ctx) {
 
 async function sendMail(to, messageT = '', messageH = '', subject = 'Hello ✔') {
 
-     let mail = nodemailer.createTransport({
-        host: process.env.MAIL_HOST,
+    //  let mail = nodemailer.createTransport({
+    //     host: process.env.MAIL_HOST,
+    //     port: process.env.MAIL_PORT,
+    //     secure: false,
+    //     auth: {
+    //         user: process.env.MAIL_USERNAME,
+    //         pass: process.env.MAIL_PASSWORD,
+    //     },
+    //     // tls: true
+    //     tls: {
+    //         rejectUnauthorized: false
+    //     }
+    // });
+
+    let mail = nodemailer.createTransport({
+        service:'gmail',
+        user:process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,
-        secure: false,
+        secure:true,
         auth: {
             user: process.env.MAIL_USERNAME,
             pass: process.env.MAIL_PASSWORD,
-        },
-        // tls: true
-        tls: {
-            rejectUnauthorized: false
         }
     });
 
     // send mail with defined transport object
     let info = await mail.sendMail({
-        from: `"TaxiSla" <${process.env.MAIL_USERNAME}>`,
+        from: `"Laviup" <${process.env.MAIL_USERNAME}>`,
         to: to, // list of receivers
         subject: subject, // Subject line
         text: messageT, // plain text body

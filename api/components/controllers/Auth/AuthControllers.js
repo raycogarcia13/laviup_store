@@ -56,7 +56,7 @@ exports.register = catchAsyncErrors(async (req,res,next) =>{
         rol:'Store'
     })
 
-    const code = Math.round(Math.random()*999999)
+    let code = Math.round(Math.random()*999999)
     if(code<100000)
         code+='9'
     // send email here
