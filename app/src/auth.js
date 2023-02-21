@@ -75,21 +75,21 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const NoAuthRoute = ({ children }) => {
-  const { token,user } = useAuth();
+  // const { token,user } = useAuth();
 
-  if (token && user) {
-    const {rol} = user.role;
-    let val=<Navigate to="/" replace />;
-    switch(rol){
-      case 'Administrador':
-        val = <Navigate to="/admin" replace />;
-        break;
-      case 'Store':
-        val = <Navigate to="/store" replace />;
-        break;
-    } 
-    return val
-  }
+  // if (token && user) {
+  //   const {rol} = user.role;
+  //   let val=<Navigate to="/" replace />;
+  //   switch(rol){
+  //     case 'Administrador':
+  //       val = <Navigate to="/admin" replace />;
+  //       break;
+  //     case 'Store':
+  //       val = <Navigate to="/store" replace />;
+  //       break;
+  //   } 
+  //   return val
+  // }
 
   return children;
 };
