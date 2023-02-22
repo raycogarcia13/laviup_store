@@ -56,7 +56,8 @@ const distance = (user,store) =>{
   const a = Math.pow(Math.sin(dlat/2),2) + Math.cos(deg2rad(user[0])) * Math.cos(deg2rad(store[0])) * Math.pow(Math.sin(dlon/2),2);
   const c = 2* Math.asin(Math.sqrt(a))
   const distance = radius * c 
-  return distance;
+
+  return distance == 0 ? 0.001 : distance;
 }
 
 const orderProducts = (prods) =>{
