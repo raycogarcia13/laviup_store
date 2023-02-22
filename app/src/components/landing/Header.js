@@ -1,6 +1,6 @@
 import React from 'react';
-import { UserOutlined, BookOutlined, LoginOutlined, HomeOutlined, ShoppingCartOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Menu, Layout, Badge, Tag, Button } from 'antd';
+import { UserOutlined, BookOutlined, LoginOutlined, HomeOutlined, ShoppingCartOutlined, DeleteOutlined, EuroOutlined } from '@ant-design/icons';
+import { Menu, Layout, Badge, Tag, Button, Space, Divider, Typography } from 'antd';
 import { useState, useEffect } from "react"
  import { useNavigate } from 'react-router-dom';
 
@@ -55,8 +55,24 @@ const App = () => {
       all.push({
         label:menu,
         key:item._id,
-        icon:<><img style={{width:'20px', height:'20px'}} src={public_uri+item.photo}/> </>
+        icon:<><img style={{width:'20px', height:'20px'}} src={item.imported ?  item.photo : public_uri+item.photo}/> </>
       })
+    })
+
+    all.push({
+      type: 'divider'
+    })
+
+    let sum = resum.reduce( (sum, it)=>{return sum+it.price},0)
+    all.push({
+      label:<>
+        <Space style={{display:'flex', justifyContent:'space-between', fontStyle:"bold"}}>
+          <Space>{sum} €</Space>
+          <Divider type="vertical" />
+          <Button type='link'>Proceder al pago</Button>
+        </Space>
+      </>,
+      key:'pay'
     })
 
     return all
@@ -92,6 +108,9 @@ const App = () => {
           break;
         case 'home':
           navigate('/',{replace:true});
+          break;
+        case 'pay':
+          navigate('/pay',{replace:true});
           break;
       }
     }

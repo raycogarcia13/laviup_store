@@ -116,14 +116,15 @@ exports.importProducts = catchAsyncErrors(async (req,res,next) =>{
 
     const all = []
     for(let item of items){ 
-        all.push({
-            name:item[0],
-            description:item[1],
-            price:item[2],
-            photo:item[3],
-            imported:true,
-            store:store._id
-        })
+        if(item[0]!='')
+            all.push({
+                name:item[0],
+                description:item[1],
+                price:item[2],
+                photo:item[3],
+                imported:true,
+                store:store._id
+            })
     }
 
     await Product.insertMany(all);

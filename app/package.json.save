@@ -1,8 +1,8 @@
 {
   "name": "gest_proy_app",
   "version": "0.1.0",
-  "license": "MIT License",
-  "private": true,
+  
+	"private": true,
   "dependencies": {
     "@ant-design/compatible": "^5.1.1",
     "@ant-design/icons": "^4.8.0",

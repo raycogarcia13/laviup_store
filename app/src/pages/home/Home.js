@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { enquireScreen } from 'enquire-js';
-import { Badge, Button, Card, Col, Divider, Input, Layout, Row, Space, Tooltip } from 'antd';
+import { Badge, Button, Card, Col, Divider, Input, Layout, Row, Space, Tooltip, Typography } from 'antd';
 
 import { setCart } from '../../store/auth/authActions'
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,6 +13,8 @@ import { SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 import localStorageUtil from '../../utils/storage';
 import Meta from 'antd/es/card/Meta';
+
+const { Paragraph } = Typography;
 
 
 const {Content} = Layout
@@ -102,9 +104,10 @@ const orderProducts = (prods) =>{
           style={{ width: 240, marginInline:10, marginBottom:10 }}
           cover={<img alt={item.name} style={{height:200}} src={item.imported==true?item.photo:public_uri+item.photo} />}
         >
-          <Meta title={item.name} description={item.description? item.description.slice(0,100)+" ..." : ""} />
+          <Meta title={item.name} description={item.description? item.description.slice(0,100).replace(/(<([^>]+)>)/gi, "")+" ..." : ""} />
           <Tooltip title="Agregar al carrito">
             <Badge count={countItem(item)}>
+              <b>{item.price} € </b>
               <Button onClick={()=>addToCart(item)} type='link'> 
                 <ShoppingCartOutlined  style={{fontSize:'16px'}}/> 
               </Button>
