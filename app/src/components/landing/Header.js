@@ -63,7 +63,7 @@ const App = () => {
       type: 'divider'
     })
 
-    let sum = resum.reduce( (sum, it)=>{return sum+it.price},0)
+    let sum = resum.reduce( (sum, it)=>{return sum+parseFloat(it.price)},0)
     all.push({
       label:<>
         <Space style={{display:'flex', justifyContent:'space-between', fontStyle:"bold"}}>

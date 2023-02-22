@@ -61,7 +61,7 @@ const distance = (user,store) =>{
 
 const orderProducts = (prods) =>{
   prods.sort( (a,b)=>{
-    return distance(location,a.store.location) < distance(location,b.store.location) ? -1 :1
+    return distance(location,a.store.location) < distance(location,b.store.location) || distance(location,a.store.location) == distance(location,b.store.location) ? -1 :1
   })
   console.log(prods)
   return prods

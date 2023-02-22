@@ -95,7 +95,7 @@ const Home = () =>{
                     </>
                   })}
 
-                  <Descriptions.Item span={3} label="TOTAL">{item.items.reduce( (sum,it)=>{return sum+=it.price*it.cant},0 )} €</Descriptions.Item>
+                  <Descriptions.Item span={3} label="TOTAL">{item.items.reduce( (sum,it)=>{return parseFloat(sum)+parseFloat(parseFloat(it.price)*parseInt(it.cant))},0 )} €</Descriptions.Item>
                   
               </Descriptions>
 
