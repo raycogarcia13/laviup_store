@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
     localStorageUtil.clearToken();
     localStorageUtil.clear('user');
 
-    navigate('/login',{replace:true});
+    navigate('/',{replace:true});
   };
 
   const value = {

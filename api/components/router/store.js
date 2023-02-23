@@ -3,7 +3,7 @@ let router = express.Router();
 
 const cruds = require("../utils/cruds")
 
-const { update, getStores, create, logoStore, all } = require('../controllers/store/StoreControllers')
+const { update, getStores, create, logoStore, all, clear } = require('../controllers/store/StoreControllers')
 
 const { get, addProduct, removeProduct, importProducts } = require('../controllers/store/ProductControllers')
 
@@ -22,6 +22,7 @@ router.delete('/products/:id',isAuthenticatedUser, removeProduct);
 router.post('/products',isAuthenticatedUser,imageUpload.single('file'),addProduct);
 
 router.post('/products_import',isAuthenticatedUser,filesUpload.single('file'), importProducts);
+router.delete('/products_clear',isAuthenticatedUser, clear);
 
 
 module.exports = router;

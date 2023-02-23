@@ -3,6 +3,7 @@ const catchAsyncErrors = require("../../middlewares/catchAsyncErrors")
 const fs = require("fs");
 const path = require("path")
 const Store = require('../../models/Store')
+const Product = require('../../models/Product')
 
 exports.create = catchAsyncErrors(async (req,res,next) =>{
 
@@ -88,6 +89,22 @@ exports.update = catchAsyncErrors(async (req,res,next) =>{
         status:"success",
         message:"Store updated",
         data:exist
+    })
+})
+
+exports.clear = catchAsyncErrors(async (req,res,next) =>{
+    const store = await Store.findOne({
+        user:req.user._id
+    })
+
+    await Product.remove({
+        store:store._id
+    })
+    
+
+    return res.json({
+        status:"success",
+        message:"Store clear",
     })
 })
 

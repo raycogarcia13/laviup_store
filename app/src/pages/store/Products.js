@@ -17,6 +17,7 @@ import {
   Modal,
   Typography,
   Upload,
+  Popconfirm,
 } from "antd";
 
 
@@ -66,7 +67,7 @@ function Home() {
     const [uploading, setUploading] = useState(false);
     
     const loading = ()=>{
-      return status == 'laading'?true:false
+      return status == 'loading'?true:false
     }
     
 
@@ -197,7 +198,7 @@ function Home() {
 
     const deleteProduct = ()=>{
       setStatus('loading')
-      const uri = `/store/products/${id}`;
+      const uri = `/store/products/`;
       api.delete(uri).then(res=>{
         setStatus('recived')
         getData();
@@ -231,7 +232,28 @@ function Home() {
       fileList2,
     };
 
-    return <Card title="Listado de productos" extra={<><Button onClick={nuevoOpen2} type='info'><FilePdfFilled /></Button> <Button onClick={nuevoOpen} type='primary'>Nuevo</Button></>}>
+    const removeAll = async ()=>{
+      const uri = '/store/products_clear/'+id
+      const data = await api.delete(uri)
+      getData();
+    }
+
+
+    return <Card title="Listado de productos" extra={<>
+          <Space style={{display:'flex', justifyContent:'space-between'}}>
+            <Popconfirm
+                title="Limpiar todos los productos"
+                onConfirm={removeAll}
+                okText="Si"
+                cancelText="No"
+              >
+                <Button type="error">Eliminar Todos</Button>
+              </Popconfirm>
+            <Button onClick={nuevoOpen2} type='info'><FilePdfFilled /></Button>
+            <Button onClick={nuevoOpen} type='primary'>Nuevo</Button>
+          </Space>
+        </>
+        }>
     <Table
             dataSource={products}
             columns={columns}
